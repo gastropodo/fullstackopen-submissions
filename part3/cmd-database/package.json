@@ -1,0 +1,14 @@
+{
+  "name": "cmd-database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mongo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dev.gastropodo@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "moongose": "^1.0.0"
+  }
+}
