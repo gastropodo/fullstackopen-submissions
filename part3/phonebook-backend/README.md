@@ -2,4 +2,4 @@
 
 ## Link to Fly.io deployed App
 
-[App Link]([https://](https://gastropodo-phonebook-backend.fly.dev))
+[App Link](https://gastropodo-phonebook-backend.fly.dev)

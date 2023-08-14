@@ -3,7 +3,7 @@
 @host = {{hostname}}:{{port}}
 @baseURL = http://{{host}}/api/persons
 
-@id = 371966
+@id = 64d953984102fdde506fc1b0
 
 ### Get Persons
 GET {{baseURL}} HTTP/1.1
@@ -19,6 +19,14 @@ POST {{baseURL}} HTTP/1.1
 Content-type: application/json
 
 {
-    "name": "Felipe Areyuna",
-    "number": "333333"
+    "name": "",
+    "number": "333333-23234"
+}
+
+### Update Person
+PUT {{baseURL}}/{{id}} HTTP/1.1
+Content-type: application/json
+
+{
+    "number": ""
 }

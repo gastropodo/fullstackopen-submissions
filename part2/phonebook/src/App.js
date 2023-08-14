@@ -20,31 +20,42 @@ const App = () => {
         }, 5000);
     }
 
+    const clearValues = () => {
+        setNewName('');
+        setNewNumber('');
+    }
+
     const addPerson = (event) => {
         event.preventDefault();
         const person = persons.find(({ name }) => name === newName);
 
-        if (!newName.match(/\S/g) || !newNumber.match(/\S/g)) {
-            alert('Name or number cannot be blank.')
-        } else if (person) {
+        if (person) {
             const message = `${newName} is already added to the phonebook. replace old number with the new one?`;
             if (window.confirm(message)) {
                 const id = person.id;
                 personsService.updatePerson(id, { ...person, number: newNumber })
                     .then(returnedPerson => {
                         setPersons(persons.map(person => person.id !== id ? person : returnedPerson));
-                        raiseNotification('success', `Updated ${returnedPerson.name} successfully.`)
+                        raiseNotification('success', `Updated ${returnedPerson.name} successfully.`);
+                        clearValues();
                     })
+                    .catch(error => {
+                        raiseNotification('error', error.response.data.error);
+                    });
             }
         } else {
             personsService.addPerson({
                 name: newName,
                 number: newNumber
-            }).then(newPerson => {
-                setPersons(persons.concat(newPerson));
-                setNewName('');
-                raiseNotification('success', `Added ${newPerson.name} successfully.`);
-            });
+            })
+                .then(newPerson => {
+                    setPersons(persons.concat(newPerson));
+                    clearValues();
+                    raiseNotification('success', `Added ${newPerson.name} successfully.`);
+                })
+                .catch(error => {
+                    raiseNotification('error', error.response.data.error);
+                });
         }
     }
 
@@ -57,7 +68,6 @@ const App = () => {
                         raiseNotification('success', `Deleted ${person.name} successfully.`);
                     })
                     .catch(error => {
-                        console.log(error);
                         raiseNotification('error', `The information of ${person.name} has already been removed from server.`);
                     })
                     .finally(() => {
