@@ -1,0 +1,31 @@
+@hostname = localhost
+@port = 3001
+@host = {{hostname}}:{{port}}
+@baseURL = http://{{host}}/api/blogs
+
+@id = 64e17508e9b517c1a26ea098
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imdhc3Ryb3BvZG8zIiwiaWQiOiI2NGUxNmRiNTc5YzUwZDFhNDgyOTkyNTQiLCJpYXQiOjE2OTI2NTU5MzN9.O99KUykwnXIgxV_NRtA6H30vdovRjVoO8HsyBx80QAo
+
+### Get Blogs
+GET {{baseURL}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Get Blog by ID
+GET {{baseURL}}/{{id}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+### Add Blog
+POST {{baseURL}} HTTP/1.1
+Content-type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Test blog 2",
+    "author": "Test",
+    "url": "/test-blog",
+    "likes": 0
+}
+
+### Delete Blog
+DELETE {{baseURL}}/{{id}} HTTP/1.1
+Authorization: Bearer {{token}}
