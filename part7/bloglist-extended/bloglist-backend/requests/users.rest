@@ -1,0 +1,22 @@
+@hostname = localhost
+@port = 3003
+@host = {{hostname}}:{{port}}
+@baseURL = http://{{host}}/api/users
+
+@id = 64e0dddc706bb5e29c16db92
+
+### Get Users
+GET {{baseURL}} HTTP/1.1
+
+### Get User by ID
+GET {{baseURL}}/{{id}} HTTP/1.1
+
+### Add User
+POST {{baseURL}} HTTP/1.1
+Content-type: application/json
+
+{
+    "username": "gastropodo3",
+    "name": "Felipe Areyuna",
+    "password": "test"
+}
