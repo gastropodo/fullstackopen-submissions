@@ -9,6 +9,6 @@
   "author": "dev.gastropodo@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "moongose": "^1.0.0"
+    "mongoose": "^7.5.1"
   }
 }
