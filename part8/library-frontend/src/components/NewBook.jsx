@@ -1,0 +1,111 @@
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { ALL_AUTHORS, ALL_GENRES, CREATE_BOOK } from "../queries";
+
+const NewBook = (props) => {
+    const { setError, show } = props;
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+    const [published, setPublished] = useState("");
+    const [genre, setGenre] = useState("");
+    const [genres, setGenres] = useState([]);
+
+    const [createBook] = useMutation(CREATE_BOOK, {
+        refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_GENRES }],
+        onError: (error) => {
+            const messages = error.graphQLErrors
+                .map((e) => e.message)
+                .join("\n");
+            setError(messages);
+        },
+    });
+
+    if (!show) {
+        return null;
+    }
+
+    const submit = async (event) => {
+        event.preventDefault();
+
+        if (!title) {
+            setError("Title cannot be empty.");
+            return;
+        }
+        if (!author) {
+            setError("Author cannot be empty.");
+            return;
+        }
+        if (!published) {
+            setError("Published year cannot be empty.");
+            return;
+        }
+        if (genres.length === 0) {
+            setError("Must have at least one genre.");
+            return;
+        }
+
+        await createBook({
+            variables: {
+                title,
+                author,
+                published,
+                genres,
+            },
+        });
+
+        setTitle("");
+        setPublished("");
+        setAuthor("");
+        setGenres([]);
+        setGenre("");
+    };
+
+    const addGenre = () => {
+        setGenres(genres.concat(genre));
+        setGenre("");
+    };
+
+    return (
+        <div>
+            <form onSubmit={submit}>
+                <div>
+                    title
+                    <input
+                        value={title}
+                        onChange={({ target }) => setTitle(target.value)}
+                    />
+                </div>
+                <div>
+                    author
+                    <input
+                        value={author}
+                        onChange={({ target }) => setAuthor(target.value)}
+                    />
+                </div>
+                <div>
+                    published
+                    <input
+                        type="number"
+                        value={published}
+                        onChange={({ target }) =>
+                            setPublished(parseInt(target.value))
+                        }
+                    />
+                </div>
+                <div>
+                    <input
+                        value={genre}
+                        onChange={({ target }) => setGenre(target.value)}
+                    />
+                    <button onClick={addGenre} type="button">
+                        add genre
+                    </button>
+                </div>
+                <div>genres: {genres.join(" ")}</div>
+                <button type="submit">create book</button>
+            </form>
+        </div>
+    );
+};
+
+export default NewBook;
